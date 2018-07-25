@@ -1,0 +1,40 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+	<h1>Microservicios - Rest-Client Server</h1>
+	<h3>Resumen</h3>
+	<ul>
+		<li>Aplicación WEB para MicroServicios de Clientes.</li>
+	</ul>
+
+	<h3>test</h3>
+
+	<ul class="openlist">
+		<li>Eureka Dashboard: <a href="http://localhost:1111">http://localhost:1111</a></li>
+		<li>Ver aplicaciones registradas: <a
+			href="http://localhost:1111/eureka/apps/">http://localhost:1111/eureka/apps/</a></li>
+
+		<li>test: <a th:href="@{/client/allClient}">/client/allClient</a></li>
+
+	</ul>
+
+	<h3>Spring Boot URLs</h3>
+	<p>Spring Boot provee URL de RESTfulpara consultar
+		tu aplicación (retorna data en formato JSON):</p>
+
+	<ul>
+		<li><a th:href="@{/beans}">The beans</a></li>
+		<li><a th:href="@{/env}">The environment</a></li>
+		<li><a th:href="@{/dump}">Thread dump</a></li>
+		<li><a th:href="@{/health}">Application health</a></li>
+		<li><a th:href="@{/info}">Application information</a></li>
+		<li><a th:href="@{/metrics}">Application metrics</a></li>
+		<li><a th:href="@{/trace}">Request call trace</a></li>
+	</ul>
+
+
+</body>
+</html>

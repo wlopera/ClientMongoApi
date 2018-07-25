@@ -1,0 +1,17 @@
+# Spring properties
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      uri: mongodb://localhost/test
+  application:
+    name: client-service  # Service registers under this name
+  thymeleaf:
+    cache: false       # Allow Thymeleaf templates to be reloaded at runtime
+    prefix: classpath:/templates/    # Trailing / mandatory
+                       # Template location for this application only
+
+# HTTP Server
+server:
+  port: 8888   # HTTP (Tomcat) port
