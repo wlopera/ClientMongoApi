@@ -24,6 +24,7 @@ Levantar MongoDB:
 Creamos una clase Client, modelo de base de datos
 
 ```
+@Id
 @ApiModel(description = "Respuesta del servico de consulta de cliente.")
 @Document(collection = "client")
 @JsonPropertyOrder({"clientId"})
@@ -59,6 +60,34 @@ public class Client implements Serializable{
     // Constructores con campos o por defecto (POJO)
     // Generar toString
 ```
+> Utilizamos la anotación @Document para definir un nombre de una colección cuando el objeto se guarde en MongoDB. En este caso, cuando el objeto “cliente” se guarde, se hará dentro de la colección “client”.
+
+> La anotación de Jackson @JsonPropertyOrder nos permite especificar el orden en que los campos del objeto java deberían ser serializados en JSON.
+
+> Las anotaciones @ApiModelProperty son específicas de Swagger y son provistas por la dependencia que SpringFox tiene de Swagger y nos permitirán luego documentar el servicio.
+
+**2. Crear repositorio **
+
+Crear la interface para definir las operaciones CRUD de el oj¿bjeto Client
+
+```
+public interface ClientRepository {
+	
+	// Consultar todos los clientes de BD-Mongo
+	public List<Client> findAllClient();
+	
+	// Agregar un cliente en de BD-Mongo
+	public Client saveClient(Client client);
+	
+	// Actualizar un cliente en de BD-Mongo
+        public void updateClient(Client client);
+	   
+        // Borrar un cliente en de BD-Mongo
+	public void deleteClient(String id);
+}
+```
+
+
 ![clientemongoapi](https://user-images.githubusercontent.com/7141537/43179721-f3fe16de-8f99-11e8-878f-5292594db7de.png)
 
 ### Resultado en MongoDB
