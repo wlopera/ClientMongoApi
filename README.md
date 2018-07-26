@@ -1,7 +1,7 @@
 # ClientMongoApi
 MicroServicio Spring boot - cloud - Rest - Mongo DB. Operaciones de clientes (CRUD)
 
-Crear un microservicio spring boot/cloud que utilizará Spring Data MongoDB para crear una aplicación que procesa (CRUD) datos de MongoDB. 
+Crear un microservicio spring boot/cloud que utilizará Spring Data MongoDB para crear una aplicación que procesa (CRUD) datos en MongoDB. 
 
 ## MongoDB
 Es un sistema de base de datos **NoSQL** orientado a documentos, desarrollado bajo el concepto de **código abierto**.
@@ -18,6 +18,16 @@ Levantar MongoDB:
 > Por defecto las peticiones se escuchan en el **puerto 27017**
 
 ## Microservicio
+
+Los microservicios se definen como un estilo arquitectural, es decir, una forma de desarrollar una aplicación, basada en un conjunto de pequeños servicios, cada uno de ellos ejecutándose de forma autónoma y comunicándose entre si mediante mecanismos livianos, generalmente a través de peticiones REST sobre HTTP por medio de sus APIs.
+
+La tendencia es que las aplicaciones sean diseñadas con un enfoque orientado a microservicios, construyendo múltiples servicios que colaboran entre si, en lugar del enfoque monolítico, donde se construye y despliega una única aplicación que contenga todas las funcionalidades.
+
+Se implementará un Microservicio que consuma MongoDB a trvés de Spring boot; luego utilizaremos Eureka (EurekaService), como servidor de registro y descubrimiento de microservicios. Eureka está incorporado dentro de Spring Cloud.
+
+#### Paquetes, clases, interfaces, css y js que componen el proyecto. Java - Spring boot/cloud, maven y AngularJS.
+
+![navigator](https://user-images.githubusercontent.com/7141537/43241089-3cdfec90-905f-11e8-96c3-22cd50116a38.png)
 
 **1. Objeto de dominio**
 
