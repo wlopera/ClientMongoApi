@@ -66,9 +66,10 @@ public class Client implements Serializable{
 
 > Las anotaciones @ApiModelProperty son específicas de Swagger y son provistas por la dependencia que SpringFox tiene de Swagger y nos permitirán luego documentar el servicio.
 
-**2. Crear repositorio **
 
-Crear la interface para definir las operaciones CRUD de el oj¿bjeto Client
+**2. Crear Repositorio**
+
+Crear la interface para definir las operaciones CRUD de el objeto de dominio **Client**
 
 ```
 public interface ClientRepository {
@@ -86,7 +87,110 @@ public interface ClientRepository {
 	public void deleteClient(String id);
 }
 ```
+Seguido de la mplementación de la interface **ClientRepository**
 
+```
+@Repository
+public class ClientRepositoryImpl implements ClientRepository {
+
+	private MongoOperations mongoOperations;
+		
+	public ClientRepositoryImpl() {}
+	
+    public ClientRepositoryImpl(MongoOperations mongoOperations) {
+		System.out.println("##=> cargando... ClientRepositoryImpl ");
+        this.mongoOperations = mongoOperations;
+    }
+	
+	@Override
+	public List<Client> findAllClient() {		
+		List<Client> clients = this.mongoOperations.find(new Query(), Client.class);
+		System.out.println("##=> ClientRepositoryImpl - findAllClient - clients: " + clients);
+        return clients;
+	}
+
+	@Override
+	public Client saveClient(Client client) {
+		 this.mongoOperations.save(client);
+		 Client newClient = findOne(client.getClientId());
+		 System.out.println("##=> ClientRepositoryImpl - saveClient - Cliente creado: " + newClient);
+		 return newClient;
+	}
+
+	@Override
+	public void updateClient(Client client) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void deleteClient(String id) {
+		// TODO Auto-generated method stub
+
+	}
+	
+	private Client findOne(String clientId) {
+	    return this.mongoOperations.findOne(new Query(Criteria.where("clientId").is(clientId)), Client.class);
+	}
+}
+```
+**2. Crear Servicios**
+
+Crear la interface para definir los servicios, lógica del negocio. Conecta el controlador con el repositorio.
+
+```
+public interface ClientService {
+	
+	// Consultar todos los clientes de BD-Mongo
+	public List<Client> findAllClient();
+	
+	// Agregar un cliente en de BD-Mongo
+	public Client saveClient(Client client);
+	
+	// Actualizar un cliente en de BD-Mongo
+    public void updateClient(Client client);
+	   
+    // Borrar un cliente en de BD-Mongo
+	public void deleteClient(String id);
+}
+```
+Seguido de la mplementación de la interface **ClientService**
+
+```
+public class ClientServiceImpl implements ClientService {
+
+	private ClientRepository clientRepository;
+	
+	public ClientServiceImpl() {}
+	
+	public ClientServiceImpl(ClientRepository clientRepository) {
+		System.out.println("##=> cargando... ClientServiceImpl ");
+		this.clientRepository = clientRepository;
+	}
+
+	@Override
+	public List<Client> findAllClient() {
+		List<Client> clients = clientRepository.findAllClient();
+		return clients;
+	}
+
+	@Override
+	public Client saveClient(Client client) {
+		return clientRepository.saveClient(client);
+	}
+
+	@Override
+	public void updateClient(Client client) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void deleteClient(String id) {
+		// TODO Auto-generated method stub
+	}
+}
+
+```
 
 ![clientemongoapi](https://user-images.githubusercontent.com/7141537/43179721-f3fe16de-8f99-11e8-878f-5292594db7de.png)
 
