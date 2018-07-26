@@ -326,7 +326,7 @@ public class RestConfiguration {
 }
 ```
 
-**7. Archivo de propiedades*
+**7. Archivo de propiedades**
 
 Por defecto, cuando inicias una aplicación spring boot , se busca un fichero llamado application.properties o _**application.yml**_ para acceder a su configuración, el cual deberá estar ubicado en la carpeta resources de nuestro proyecto. Su configuración es la siguiente:
 
@@ -352,9 +352,221 @@ server:
 
 ```
 
+**8. Vista para consultar, crear o actualizar clientes**
 
+Uso de AngularJS, Boopstrap, css y js. Ventana de clientes
+
+```
+<!DOCTYPE html>
+<html ng-app="MyApp">
+	<head>
+	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />	    
+	    
+	    <!-- Libreria CCS bootstrap -->
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+	    
+	    <!-- Libreria CCS propia del aplicativo -->
+	    <link rel="stylesheet" href="../../css/style.css"></link>
+	    
+	    <!-- Libreria Jquery - requerida por boopstrap -->
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	    
+	    <!-- Libreria bootstrap -->
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	    
+	    <!-- Libreria angularJS -->
+	    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+	    
+	    <!-- Libreria propia del aplicativo -->
+	    <script src="../../js/app.js"></script>
+	    
+	    <title>MicroserviciosAPP</title>
+	</head>
+	<body ng-controller="MyController">
+		<h1>Clientes</h1>
+		<hr></hr>
+		<div class="container">
+		  <div class="row">
+		  	<div class="col-sm-8">
+		  		<button ng-click="getCustomer()" class ="btn btn-info">Todos los Clientes</button>
+		  		<br></br>
+				<br></br>
+		  		<div class="row" ng-show="showData">
+		  			<table class="table table-striped">
+		  				<thead>
+		  					<tr>
+		  						<th>ID</th>
+		  						<th>NOMBRE</th>
+		  						<th>TELEFONO</th>
+		  						<th>CORREO</th>
+		  					</tr>
+		  				</thead>
+		  				<tbody>
+		  					<tr ng-repeat="client in clients">
+		  						<td>{{client.clientId}}</td>
+		  						<td>{{client.name}}</td>
+		  						<td>{{client.phone}}</td>
+		  						<td>{{client.email}}</td>
+		  					</tr>
+		  				</tbody>
+		  			</table>
+		  		</div>
+		  	</div>
+		</div>
+	  </div>
+	  
+	  <!-- Modal -->
+      	  <div ng-include="'/view/modal.html'"></div
+	</body>	
+</html>
+```
+
+**9. Ventana modal, crear o actualizar clientes**
+
+Uso de Boopstrap y jquery para desplegar vista modal.
+
+```
+<div class="modal fade" id="recordModal" tabindex="1" role="dialog"
+aria-labelledby="myModalLabel" aria-hidden="false">
+<div class="modal-dialog">
+  <div class="modal-content">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+        </button>
+      <h4 class="modal-title" id="myModalLabel">Agregar / Modificar Cliente</h4>
+    </div>
+
+    <div class="modal-body">
+        <form name="recordForm" id="recordForm">
+            <p>Datos del cliente</p>
+
+            <div class="form-group">
+                <label for="clientId">C&eacutedula</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="glyphicon glyphicon-user"></i>
+                    </div>
+                    <input ng-model="record.clientId" name="clientId" id="clientId"
+                    class="form-control" type="text"
+                    placeholder="N&uacute;mero de identidad"></input>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Nombre</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="glyphicon glyphicon-stats"></i>
+                    </div>
+                    <input ng-model="record.name" name="name" id="name"
+                    class="form-control" type="text"
+                    placeholder="Nombre completo"></input>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Tel&eacutefono</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="glyphicon glyphicon-link"></i>
+                    </div>
+                    <input ng-model="record.phone" name="phone" id="phone"
+                    class="form-control" type="text"
+                    placeholder="N&uacute;mero de tel&eacute;fono"></input>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Correo</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="glyphicon glyphicon-link"></i>
+                    </div>
+                    <input ng-model="record.email" name="email" id="email"
+                    class="form-control" type="text"
+                    placeholder="Correo"></input>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar</button>
+      <button ng-click="addCustomer()" type="button" class="btn btn-success">Procesar</button>
+    </div>
+  </div>
+</div>
+</div>
+```
+
+**10. Modulo y controlador de AngularJS**
+
+Uso AngularJS para controlde clientes a nivel de vista. Modelo MVC.
+
+```
+// Modulo angular
+// scope: Alcance de variables 
+// hhtp: libreria HTPP consulta de servicios REST
+angular.module("MyApp", [])
+    .controller("MyController",["$scope", "$http", function($scope, $http){
+    	
+    	$scope.showData = false; 	// Variable para mostrar resultados
+    	$scope.clients = {};     	// Clientes encontrados en la consulta
+    	$scope.record = {};     	// Clientes actual
+    	
+    	// Permite consultar clientes - protocolo HTTP
+    	$scope.getCustomer = function(){
+    	  $http.get("/client/findAll")        // URI de llamada
+    	  .then(function onSuccess(response) {     // Respuesta OK
+    		$scope.showData = true;
+    	    $scope.clients=response.data;
+    	    console.log("##=> clientes: ", $scope.clients);
+    	  }).catch(function onError(response) {   // Respuesta Error
+    		$scope.showData = false;
+    	    console.log("##=> Error: ", response);
+    	  });
+    	  $('#recordModal').modal('show');
+    	};
+
+    	// Permite agregar un cliente - protocolo HTTP
+    	$scope.addCustomer = function(){
+    	  // URI de llamada
+    	   $http({
+    		   url: "/client/save",
+    		   method: "POST",
+    		   data: JSON.stringify($scope.record),
+    		   headers: {"Content-Type": "application/json"}
+    	   })
+    	  .then(function onSuccess(response) {     // Respuesta OK
+    		$scope.showData = true;
+    	    $scope.clients=response.data;
+    	    console.log("##=> clientes: ", $scope.clients);
+    	  }).catch(function onError(response) {   // Respuesta Error
+    		$scope.showData = false;
+    	    console.log("##=> Error: ", response);
+    	  });
+    	   $scope.record = {};
+    	  $('#recordModal').modal('hide');
+    	};
+
+    	    	 
+      /**
+       * Permite mostrar la ventana modal para ingresar datos a procesar
+       */
+       $scope.showModal = function(){
+    	  $('#recordModal').modal('show');
+       }
+    	
+    }]);
+```
+##### Levantar servicio y probar
+> Recordar levantar mongoDB previamente.
 
 ![clientemongoapi](https://user-images.githubusercontent.com/7141537/43179721-f3fe16de-8f99-11e8-878f-5292594db7de.png)
 
-### Resultado en MongoDB
+##### Resultado en MongoDB
+
 ![clientemongoapi-1](https://user-images.githubusercontent.com/7141537/43179765-326f2cc8-8f9a-11e8-97d3-9aa362b17a1d.png)
