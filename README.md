@@ -199,8 +199,160 @@ public class ClientServiceImpl implements ClientService {
 		// TODO Auto-generated method stub
 	}
 }
+```
+**3. Crear Excepciones**
+
+En el caso de no localizar un cliente o de error, se lanzará una excepción.
 
 ```
+public class ClientException extends Exception {
+	private static final long serialVersionUID = -5512024050035997366L;
+	public ClientException(String clientId) {
+        super(String.format("No se encontro el usuario con identificador: '%s'", clientId));
+    }
+}
+```
+
+**4. Crear Controlador**
+
+A continuación la implementación del CleintController
+
+```
+@Controller
+public class ClientController {
+	
+    private static final Log log = LogFactory.getLog(ClientController.class);
+	 
+    private ClientService clientService;
+    
+    public ClientController() {}
+
+    public ClientController(ClientService clientService) {
+	this.clientService = clientService;
+    }
+    
+    @RequestMapping("/")
+    public String home() {
+	return "index";
+    }
+    
+    @RequestMapping("/client")
+    public String goHome() {    	
+        return "client";
+    }	
+    
+    @RequestMapping("/client/findAll")
+    @ApiOperation(value = "Consultar todos los clientes", notes = "Retorna todos los clientes" )
+    @ResponseBody
+    public List<Client> findAll(){
+        log.info("##=> Consultar todos los clientes");
+        List<Client> clients = clientService.findAllClient();
+        log.info("##=> ClientController - findAllClient - Clientes: " + clients.toString());
+        return clients;
+    }
+    
+    @RequestMapping(value = "/client/save", method=RequestMethod.POST)
+    @ApiOperation(value = "Crear cliente", notes = "Crear un nuevo cliente")
+    @ResponseBody
+    public  List<Client> saveUser(@RequestBody @Valid Client client){
+    	log.info("##=> Salvar cliente: "+ client);
+    	Client newClient = clientService.saveClient(client);
+		log.info("##=> ClientController - saveClient - Cliente creado: " + newClient);
+    	return findAll();
+    }
+}
+```
+>  La petición RestFul @RequestMapping("/client/findAll") => Consultar todos los clientes de la base de datos
+>  La petición @RequestMapping("/client") => Despliega la vista **client.html**, permite consultar crear o actualizar clientes
+> La anotación @ApiOperation permitirá documentar luego los servicios RestFuk expuestos.
+
+**5. Crear Aplicación**
+
+Clase que ejecute la aplicación Spring Boot:
+
+@SpringBootApplication		// Indica que se trata de una aplicación Spring Boot
+
+```
+public class ClientMongoApiApplication {
+    public static void main(String[] args) {
+	SpringApplication.run(ClientMongoApiApplication.class, args);
+    }
+}
+```
+
+**6. Crear clase que configura la aplicación**
+
+Clase que permite la inyección y creación de objetos requeridos. 
+* Cliente MongoDB
+* Template Rest
+* Repositorio
+* Servicio
+* Controlador
+```
+@Configuration
+public class RestConfiguration {
+
+	@Bean
+	public MongoDbFactory mongoDbFactory() throws Exception {
+	    return new SimpleMongoDbFactory(new MongoClient(), "clientdb");
+	}
+
+	@Bean
+	public MongoTemplate mongoTemplate() throws Exception {		
+	    MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory());				
+	    return mongoTemplate;		
+	}
+	
+	@LoadBalanced  // Asegúrese de inyectar la plantilla de carga correcta
+	@Bean
+	RestTemplate restTemplate() {
+	     return new RestTemplate();
+	}
+	
+	@Bean
+	ClientRepository clientRepository() throws Exception {
+	    return new ClientRepositoryImpl(mongoTemplate());
+	} 
+	
+	@Bean
+	ClientService clientService() throws Exception {
+	    return new ClientServiceImpl(clientRepository());
+	} 
+	
+	@Bean
+	ClientController clientController() throws Exception {
+	    return new ClientController(clientService() );
+	}
+}
+```
+
+**7. Archivo de propiedades*
+
+Por defecto, cuando inicias una aplicación spring boot , se busca un fichero llamado application.properties o _**application.yml**_ para acceder a su configuración, el cual deberá estar ubicado en la carpeta resources de nuestro proyecto. Su configuración es la siguiente:
+
+
+```
+# Spring properties
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      uri: mongodb://localhost/test
+  application:
+    name: client-service  # Service registers under this name
+  thymeleaf:
+    cache: false       # Allow Thymeleaf templates to be reloaded at runtime
+    prefix: classpath:/templates/    # Trailing / mandatory
+                       # Template location for this application only
+
+# HTTP Server
+server:
+  port: 8888   # HTTP (Tomcat) port
+
+```
+
+
 
 ![clientemongoapi](https://user-images.githubusercontent.com/7141537/43179721-f3fe16de-8f99-11e8-878f-5292594db7de.png)
 
