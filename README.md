@@ -10,13 +10,55 @@ MongoDB forma parte de la nueva familia de sistemas de base de datos NoSQL. En l
 [Instalar MongoDB!](https://docs.mongodb.com/manual/installation/)
 
 Levanta el servidor de MongoDB:
-* cmd windows: unidad\path_install_Mongo\bin> **mongod**.exe.
+* cmd windows: unidad\ruta_mongo\bin> **mongod**.exe.
 
 Levantar MongoDB:
-* cmd windows: unidad\path_install_Mongo\bin> **mongo**.exe.
+* cmd windows: unidad\ruta_mongo\bin> **mongo**.exe.
     
 > Por defecto las peticiones se escuchan en el **puerto 27017**
 
+## Microservicio
+
+**1. Objeto de dominio**
+
+Creamos una clase Client, modelo de base de datos
+
+```
+@ApiModel(description = "Respuesta del servico de consulta de cliente.")
+@Document(collection = "client")
+@JsonPropertyOrder({"clientId"})
+public class Client implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+		
+	@ApiModelProperty(notes = "Identificador del cliente", example = "Integer", required = true, position = 0)
+	@NotNull
+	private String clientId;
+	
+	@ApiModelProperty(notes = "Identificador del cliente", example = "String", required = true, position = 1)
+	@NotNull	
+	private String name;
+	
+	@ApiModelProperty(notes = "Identificador del cliente", example = "String", required = true, position = 2)
+	@NotNull
+	private String phone;
+	
+	@ApiModelProperty(notes = "Identificador del cliente", example = "String", required = true, position = 3)
+	@NotNull
+	private String email;
+	
+	public Client() {}
+	
+	public Client(String clientId, String name, String phone, String email) {
+		this.clientId = clientId;
+		this.name = name;
+		this.phone = phone;
+		this.email = email;
+	}
+    // getters and Setters
+    // Constructores con campos o por defecto (POJO)
+    // Generar toString
+```
 ![clientemongoapi](https://user-images.githubusercontent.com/7141537/43179721-f3fe16de-8f99-11e8-878f-5292594db7de.png)
 
 ### Resultado en MongoDB
