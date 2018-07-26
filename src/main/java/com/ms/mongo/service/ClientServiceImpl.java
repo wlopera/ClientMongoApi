@@ -1,10 +1,9 @@
-package com.ms.mongo.service.impl;
+package com.ms.mongo.service;
 
 import java.util.List;
 
 import com.ms.mongo.model.Client;
 import com.ms.mongo.repository.ClientRepository;
-import com.ms.mongo.service.ClientService;
 
 public class ClientServiceImpl implements ClientService {
 

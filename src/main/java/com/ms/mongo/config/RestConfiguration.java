@@ -11,9 +11,9 @@ import org.springframework.web.client.RestTemplate;
 import com.mongodb.MongoClient;
 import com.ms.mongo.controller.ClientController;
 import com.ms.mongo.repository.ClientRepository;
-import com.ms.mongo.repository.impl.ClientRepositoryImpl;
+import com.ms.mongo.repository.ClientRepositoryImpl;
 import com.ms.mongo.service.ClientService;
-import com.ms.mongo.service.impl.ClientServiceImpl;
+import com.ms.mongo.service.ClientServiceImpl;
 
 @Configuration
 public class RestConfiguration {

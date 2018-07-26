@@ -1,4 +1,4 @@
-package com.ms.mongo.repository.impl;
+package com.ms.mongo.repository;
 
 import java.util.List;
 
@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.ms.mongo.model.Client;
-import com.ms.mongo.repository.ClientRepository;
 
 @Repository
 public class ClientRepositoryImpl implements ClientRepository {
